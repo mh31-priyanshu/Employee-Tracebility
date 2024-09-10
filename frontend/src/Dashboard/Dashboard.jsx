@@ -14,6 +14,7 @@ function Dashboard() {
       <Sidebar />
       <main className="w-4/5">
         <Header/>
+        {selectedPage=='' && ''}
         {selectedPage=='user-master' && <UserMaster />}
         {selectedPage=='shift-master' && <ShiftMaster />}
         {selectedPage=='line-master' && <LineMaster />}
