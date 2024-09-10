@@ -11,7 +11,7 @@ const sidebarItems = [
 ];
 
 function Sidebar() {
-    const [isSettingsOpen, setIsSettingsOpen] = useState(true);
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const { selectedPage, setSelectedPage } = useGlobal();
     return (
         <nav className="p-4 w-1/5 bg-white">
