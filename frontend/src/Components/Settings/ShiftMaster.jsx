@@ -1,6 +1,38 @@
 import React from 'react';
+import { useState } from 'react';
 
 export default function ShiftMaster() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [rowsToShow, setRowsToShow] = useState(5);
+  const shifts = [
+    { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 14:00" },
+    { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 14:00" },
+    { name: "Evening", startTime: "04-09-2024 12:00", endTime: "04-09-2024 21:00" },
+    { name: "Night", startTime: "04-09-2024 20:00", endTime: "04-09-2024 05:00" },
+    { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 05:00" },
+    { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 14:00" },
+    { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 14:00" },
+    { name: "Evening", startTime: "04-09-2024 12:00", endTime: "04-09-2024 21:00" },
+    { name: "Night", startTime: "04-09-2024 20:00", endTime: "04-09-2024 05:00" },
+    { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 05:00" },
+    { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 14:00" },
+    { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 14:00" },
+    { name: "Evening", startTime: "04-09-2024 12:00", endTime: "04-09-2024 21:00" },
+    { name: "Night", startTime: "04-09-2024 20:00", endTime: "04-09-2024 05:00" },
+    { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 05:00" },
+    { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 14:00" },
+    { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 14:00" },
+    { name: "Evening", startTime: "04-09-2024 12:00", endTime: "04-09-2024 21:00" },
+    { name: "Night", startTime: "04-09-2024 20:00", endTime: "04-09-2024 05:00" },
+    { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 05:00" },
+  ]
+  const filteredShifts = shifts.filter((shift) =>
+    shift.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    shift.startTime.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    shift.endTime.includes(searchTerm.toLowerCase())
+  );
+  const limitedShift = filteredShifts.slice(0, rowsToShow);
+
   return (
     <main className="flex-1 overflow-y-auto p-6">
 
@@ -52,13 +84,9 @@ export default function ShiftMaster() {
               </tr>
             </thead>
             <tbody>
-              {[
-                { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 14:00" },
-                { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 14:00" },
-                { name: "Evening", startTime: "04-09-2024 12:00", endTime: "04-09-2024 21:00" },
-                { name: "Night", startTime: "04-09-2024 20:00", endTime: "04-09-2024 05:00" },
-                { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 05:00" },
-              ].map((shift) => (
+              {filteredShifts.length>0?
+              
+              limitedShift.map((shift) => (
                 <tr key={shift.id} className="border-b">
                   <td className="px-4 py-2">{shift.name}</td>
                   <td className="px-4 py-2">{shift.startTime}</td>
@@ -78,9 +106,28 @@ export default function ShiftMaster() {
                     </button>
                   </td>
                 </tr>
-              ))}
+              )):
+              <tr>
+                <td colSpan="8" className="text-center py-4">No results found</td>
+              </tr>
+              
+              }
             </tbody>
           </table>
+          <div className='mt-3'>
+            <label htmlFor="rowsToShow" className="mr-2">Rows to show:</label>
+            <select
+              id="rowsToShow"
+              className="p-2 border rounded-lg"
+              value={rowsToShow}
+              onChange={(e) => setRowsToShow(Number(e.target.value))}
+            >
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value={filteredShifts.length}>All</option>
+            </select>
+          </div>
         </div>
       </div>
     </main>
