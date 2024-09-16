@@ -4,10 +4,13 @@ const GlobalContext = createContext();
 
 export function GlobalProvider({ children }) {
   const [selectedPage, setSelectedPage] = useState('');
-
+  const [openSideBar, setOpenSideBar] = useState(false); // New state for sidebar
+  
   const value = {
     selectedPage,
     setSelectedPage,
+    openSideBar,
+    setOpenSideBar, // Function to toggle sidebar
   };
 
   return (

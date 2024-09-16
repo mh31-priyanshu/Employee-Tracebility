@@ -1,9 +1,7 @@
 import React from 'react';
-import { useState } from 'react';
+import TableSearch from '../Additional/TableSearch';
 
 export default function UserMaster() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [rowsToShow, setRowsToShow] = useState(5);
   const employees = [
     { id: "#5644", name: "Alexander", phone: "9999999999", email: "Alexander@gmail.com", barcode: "||||||||||||", qualification: "10th pass" },
     { id: "#6112", name: "Luke", phone: "9999999999", email: "Pegasus@gmail.com", barcode: "||||||||||||", qualification: "12th pass" },
@@ -21,14 +19,10 @@ export default function UserMaster() {
     { id: "#6535", name: "Cecil", phone: "9999999999", email: "Cecil@gmail.com", barcode: "||||||||||||", qualification: "10th pass" },
     { id: "#6541", name: "Lukera", phone: "9999999999", email: "Luke@gmail.com", barcode: "||||||||||||", qualification: "12th pass" },
   ]
-  const filteredEmployees = employees.filter((employee) =>
-    employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.phone.includes(searchTerm) ||
-    employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.qualification.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  const limitedEmployees = filteredEmployees.slice(0, rowsToShow);
+  const columns = [
+    "Employee ID","Employee Name","Phone Number","Email-ID","Barcode","Qualification","Edit","Delete"
+  ]
+
   return (
     <main className="flex-1 overflow-y-auto p-6">
 
@@ -83,7 +77,7 @@ export default function UserMaster() {
         <div className='flex justify-between items-center bg-[#F7F9FC] px-6 py-6 mb-6 rounded-t-lg'>
             <h3 className="text-lg font-semibold">Permissions:</h3>
         </div>
-        <div className='flex px-6 pb-12 gap-10'>
+        <div className='md:flex px-6 pb-12 gap-10'>
           <span className="block text-md font-medium text-gray-700 mb-2">User Type :</span>
           <div className="flex space-x-4">
             <label className="inline-flex items-center">
@@ -101,85 +95,8 @@ export default function UserMaster() {
           </div>
         </div>
       </div>
-
-      {/* Employees Table */}
-      <div className="bg-white shadow rounded-lg">
-        <div className='flex justify-between items-center bg-[#F7F9FC] px-6 py-6 mb-6 rounded-t-lg'>
-            <h3 className="text-lg font-semibold">Employees Table:</h3>
-            <div className="flex justify-end  space-x-2">
-                <input 
-                  type="text" 
-                  placeholder="Search" 
-                  className="p-2 border rounded-lg px-5 w-[450px] " 
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)} 
-                />
-                <button className="px-8 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Export</button>
-            </div>
-        </div>
-        <div className="overflow-x-auto  px-6 pb-12 ">
-          <table className="min-w-full">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="px-4 py-2 text-left">Employee ID</th>
-                <th className="px-4 py-2 text-left">Employee Name</th>
-                <th className="px-4 py-2 text-left">Phone Number</th>
-                <th className="px-4 py-2 text-left">Email-Id</th>
-                <th className="px-4 py-2 text-left">Barcode</th>
-                <th className="px-4 py-2 text-left">Qualification</th>
-                <th className="px-4 py-2 text-left">Edit</th>
-                <th className="px-4 py-2 text-left">Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-          {filteredEmployees.length > 0 ? (
-            limitedEmployees.map((employee) => (
-              <tr key={employee.id} className="border-b">
-                <td className="px-4 py-2">{employee.id}</td>
-                <td className="px-4 py-2">{employee.name}</td>
-                <td className="px-4 py-2">{employee.phone}</td>
-                <td className="px-4 py-2">{employee.email}</td>
-                <td className="px-4 py-2">{employee.barcode}</td>
-                <td className="px-4 py-2">{employee.qualification}</td>
-                <td className="px-4 py-2">
-                  <button className="text-blue-500 hover:text-blue-700">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                    </svg>
-                  </button>
-                </td>
-                <td className="px-4 py-2">
-                  <button className="text-red-500 hover:text-red-700">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
-                  </button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="8" className="text-center py-4">No results found</td>
-            </tr>
-          )}
-        </tbody>
-          </table>
-          <div className='mt-3'>
-            <label htmlFor="rowsToShow" className="mr-2">Rows to show:</label>
-            <select
-              id="rowsToShow"
-              className="p-2 border rounded-lg"
-              value={rowsToShow}
-              onChange={(e) => setRowsToShow(Number(e.target.value))}
-            >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
-              <option value={filteredEmployees.length}>All</option>
-            </select>
-          </div>
-        </div>
-      </div>
+      <TableSearch name="Employee Table" data={employees} header={columns}/>
+      
     </main>
   );
 }

@@ -13,8 +13,9 @@ const sidebarItems = [
 function Sidebar() {
     const [isSettingsOpen, setIsSettingsOpen] = useState(true);
     const { selectedPage, setSelectedPage } = useGlobal();
+    const {openSideBar, setOpenSideBar} = useGlobal();
     return (
-        <nav className="p-4 w-1/5 bg-white">
+        <nav className={`${openSideBar?'max-md:block z-50 fixed shadow-lg w-[320px]':'max-md:hidden'} p-4 bg-white md:w-[320px]`}>
             <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/a6798a9241c17dbb1d4d5c7490ae3dfaa3561f3d4bed1a9847acf18d80520877?placeholderIfAbsent=true&apiKey=ab952a7505584a89aa779c6b786731e3" alt="Logo" className="object-contain aspect-[5.15] w-[160px] mb-[60px]" />
             <ul className="space-y-1">
             <li>
@@ -51,7 +52,7 @@ function Sidebar() {
             </li>
             <li>
                 <button 
-                onClick={() => setIsSettingsOpen(!isSettingsOpen)} 
+                onClick={() => {setIsSettingsOpen(!isSettingsOpen)}} 
                 className={`flex items-center justify-between w-full text-gray-700  rounded p-2 ${!isSettingsOpen?' bg-gray-200':'text-gray-700'} `}
                 >
                 <span className={`flex items-center `}>
@@ -67,56 +68,56 @@ function Sidebar() {
                 <ul className="ml-4 mt-2 space-y-2">
 
                     <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='user-master'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
-                        onClick={() => setSelectedPage('user-master')}
+                        onClick={() => {setSelectedPage('user-master'); setOpenSideBar(false)}}
                     >
                         <User className="w-4 h-4 mr-2" />
                         User Master
                     </button>
                     
                     <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='shift-master'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
-                        onClick={() => setSelectedPage('shift-master')}
+                        onClick={() => {setSelectedPage('shift-master'); setOpenSideBar(false)}}
                     >
                         <UsersRoundIcon className="w-4 h-4 mr-2" />
                         Shift Master
                     </button>
                     
                     <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='line-master'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
-                        onClick={() => setSelectedPage('line-master')}
+                        onClick={() => {setSelectedPage('line-master'); setOpenSideBar(false)}}
                     >
                         <ChartNoAxesColumn className="w-4 h-4 mr-2" />
                         Line Master
                     </button>
                     
                     <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='line-assignment'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
-                        onClick={() => setSelectedPage('line-assignment')}
+                        onClick={() => {setSelectedPage('line-assignment'); setOpenSideBar(false)}}
                     >
                         <PenLine className="w-4 h-4 mr-2" />
                         Line Assignment
                     </button>
                     
                     <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='station-master'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
-                        onClick={() => setSelectedPage('station-master')}
+                        onClick={() => {setSelectedPage('station-master'); setOpenSideBar(false)}}
                     >
                         <RadioTower className="w-4 h-4 mr-2" />
                         Station Master
                     </button>
                     
                     <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='barcode-verify'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
-                        onClick={() => setSelectedPage('barcode-verify')}
+                        onClick={() => {setSelectedPage('barcode-verify'); setOpenSideBar(false)}}
                     >
                         <Barcode className="w-4 h-4 mr-2" />
                         Barcode Verify
                     </button>
                     
                     <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='data-backup'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
-                        onClick={() => setSelectedPage('data-backup')}
+                        onClick={() => {setSelectedPage('data-backup'); setOpenSideBar(false)}}
                     >
                         <DatabaseBackup className="w-4 h-4 mr-2" />
                         Data Backup
                     </button>
                     
                     <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='data-restore'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
-                        onClick={() => setSelectedPage('data-restore')}
+                        onClick={() => {setSelectedPage('data-restore'); setOpenSideBar(false)}}
                     >
                         <ArchiveRestore className="w-4 h-4 mr-2" />
                         Data Restore
