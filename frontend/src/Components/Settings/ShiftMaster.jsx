@@ -34,9 +34,9 @@ export default function ShiftMaster() {
 
       {/* User Master Form */}
       <div className="bg-white shadow rounded-lg mb-6">
-        <div className='flex justify-between items-center bg-[#F7F9FC] px-6 py-6 mb-6 rounded-t-lg'>
+        <div className='md:flex justify-between items-center bg-[#F7F9FC] px-6 py-6 mb-6 rounded-t-lg'>
             <h3 className="text-lg font-semibold">Shift Management:</h3>
-            <div className="flex justify-end  space-x-2">
+            <div className="flex  space-x-2  max-md:mt-3">
                 <button className="px-8 py-2 border rounded-lg text-gray-600 hover:bg-gray-100">Reset</button>
                 <button className="px-8 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Save</button>
             </div>

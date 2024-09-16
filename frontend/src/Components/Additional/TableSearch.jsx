@@ -20,11 +20,11 @@ export default function TableSearch({ name, header, data }) {
           <input 
             type="text" 
             placeholder="Search" 
-            className="p-2 border rounded-lg px-5 w-[450px] max-md:mt-2 max-md:w-[200px]" 
+            className="p-2 border rounded-lg px-5 w-[450px] max-md:mt-2 max-md:w-[160px]" 
             value={searchTerm} 
             onChange={(e) => setSearchTerm(e.target.value)}  
           />
-          <button className="px-8 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 max-md:mt-2">
+          <button className="px-8 py-2 max-md:px-6 max-md:py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 max-md:mt-2">
             Export
           </button>
         </div>
