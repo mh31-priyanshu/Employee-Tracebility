@@ -1,6 +1,8 @@
 import React from 'react';
 import TableSearch from '../Additional/TableSearch';
+import { useEffect,useState } from 'react';
 export default function LineAssignment() {
+  const [currentShift, setCurrentShift] = useState('');
   const lines = [
     { date: "04-09-2024", shift: "Morning", lineName: "Line 1", employeeName: "Alex", employeeBarcode: "||||||||||||||||||||||||||||||||" },
     { date: "04-09-2024", shift: "Morning", lineName: "Line 1", employeeName: "Alex", employeeBarcode: "||||||||||||||||||||||||||||||||" },
@@ -16,6 +18,44 @@ export default function LineAssignment() {
   const columns = [
     "Date","Shift","Line Name","Employee Name","Employee Barcode","Edit","Delete"
   ]
+  const shifts = [
+    { name: "Morning", startTime: "07:00", endTime: "12:00" },
+    { name: "Afternoon", startTime: "12:00", endTime: "18:00" },
+    { name: "Evening", startTime: "18:00", endTime: "22:00" },
+    { name: "Night", startTime: "22:00", endTime: "03:00" },
+  ]
+  useEffect(() => {
+    const getCurrentShift = () => {
+      const now = new Date();
+      const currentTime = now.getHours() * 60 + now.getMinutes();
+
+      for (const shift of shifts) {
+        let [startHour, startMinute] = shift.startTime.split(':').map(Number);
+        let [endHour, endMinute] = shift.endTime.split(':').map(Number);
+
+        let startTimeMinutes = startHour * 60 + startMinute;
+        let endTimeMinutes = endHour * 60 + endMinute;
+
+        // Handle the night shift that crosses midnight
+        if (endTimeMinutes < startTimeMinutes) {
+          endTimeMinutes += 24 * 60;
+        }
+
+        if (currentTime >= startTimeMinutes && currentTime < endTimeMinutes) {
+          return shift.name;
+        }
+
+        // Special case for the night shift
+        if (shift.name === "Night" && (currentTime >= startTimeMinutes || currentTime < endTimeMinutes % (24 * 60))) {
+          return shift.name;
+        }
+      }
+
+      return shifts[0].name; // Default to the first shift if no match is found
+    };
+
+    setCurrentShift(getCurrentShift());
+  }, []);
   return (
     <main className="flex-1 overflow-y-auto p-6">
 
@@ -47,7 +87,18 @@ export default function LineAssignment() {
           </div>
           <div>
             <label htmlFor="start-time" className="block text-sm font-medium text-gray-700 mb-1">Shift</label>
-            <input type="text" id="start-time" className="w-full p-2 border rounded" />
+            <select 
+              className="w-full p-2 border rounded" 
+              name="shift" 
+              value={currentShift}
+              onChange={(e) => setCurrentShift(e.target.value)}
+            >
+              {shifts.map((shift, index) => (
+                <option key={index} value={shift.name} className="px-4 py-2 text-left">
+                  {shift.name}
+                </option>
+              ))}
+            </select>
           </div>
         </form>
         

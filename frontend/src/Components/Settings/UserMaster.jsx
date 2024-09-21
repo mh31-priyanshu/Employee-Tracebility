@@ -26,7 +26,6 @@ export default function UserMaster() {
   return (
     <main className="flex-1 overflow-y-auto p-6">
 
-      {/* User Master Form */}
       <div className="bg-white shadow rounded-lg mb-6">
         <div className='md:flex justify-between items-center bg-[#F7F9FC] px-6 py-6 mb-6 rounded-t-lg'>
             <h3 className="text-lg font-semibold">User Master:</h3>
@@ -65,8 +64,8 @@ export default function UserMaster() {
             <input type="text" id="experience" className="w-full p-2 border rounded" />
           </div>
           <div>
-            <label htmlFor="designation" className="block text-sm font-medium text-gray-700 mb-1">Designation</label>
-            <input type="text" id="designation" className="w-full p-2 border rounded" />
+            <label htmlFor="designation" className="block text-sm font-medium text-gray-700 mb-1">Documents</label>
+            <input type="file" id="designation" className="w-full p-2 border rounded" />
           </div>
         </form>
         

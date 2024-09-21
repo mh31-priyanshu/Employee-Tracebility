@@ -1,7 +1,8 @@
 import { CircleUserRound, CroissantIcon, Cross, CrossIcon, Crosshair, MenuIcon, Moon, X } from 'lucide-react';
 import React from 'react';
-import { useGlobal } from '../context/GlobalContext';
 import DateObject from "react-date-object";
+import { useSelector, useDispatch } from 'react-redux';
+import { setOpenSideBar } from '../context/context';
 
 function Header() {
   const Overview = {
@@ -14,13 +15,17 @@ function Header() {
     'data-backup':'Data Backup',
     'data-restore':'Data Restore',
   }
-  const {selectedPage } = useGlobal();
+  const selectedPage = useSelector((state) => state.global.selectedPage);
+  const openSideBar = useSelector((state) => state.global.openSideBar);
+  const dispatch = useDispatch();
+  const toggleSideBar = () => {
+    dispatch(setOpenSideBar(!openSideBar));
+  };
   console.log(selectedPage);
 
   var date = new DateObject({
     date: new Date(),
   });
-  const {openSideBar, setOpenSideBar} = useGlobal();
 
   return (
     <header className=''>
@@ -36,13 +41,13 @@ function Header() {
           {openSideBar?(
             <X className="w-[30px] h-[30px] rounded-3xl cursor-pointer md:hidden" 
             strokeWidth={0.7}
-            onClick={()=>{setOpenSideBar(!openSideBar)}}
+            onClick={()=>{toggleSideBar()}}
             />
             
           ):(
             <MenuIcon className="w-[30px] h-[30px] rounded-3xl cursor-pointer md:hidden" 
             strokeWidth={0.7}
-            onClick={()=>{setOpenSideBar(!openSideBar)}}
+            onClick={()=>{toggleSideBar()}}
             />
           )}
         </div>

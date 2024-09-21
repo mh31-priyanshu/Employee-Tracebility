@@ -5,25 +5,9 @@ import TableSearch from '../Additional/TableSearch';
 export default function ShiftMaster() {
   const shifts = [
     { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 14:00" },
-    { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 14:00" },
+    { name: "Afternoon", startTime: "04-09-2024 08:00", endTime: "04-09-2024 14:00" },
     { name: "Evening", startTime: "04-09-2024 12:00", endTime: "04-09-2024 21:00" },
     { name: "Night", startTime: "04-09-2024 20:00", endTime: "04-09-2024 05:00" },
-    { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 05:00" },
-    { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 14:00" },
-    { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 14:00" },
-    { name: "Evening", startTime: "04-09-2024 12:00", endTime: "04-09-2024 21:00" },
-    { name: "Night", startTime: "04-09-2024 20:00", endTime: "04-09-2024 05:00" },
-    { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 05:00" },
-    { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 14:00" },
-    { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 14:00" },
-    { name: "Evening", startTime: "04-09-2024 12:00", endTime: "04-09-2024 21:00" },
-    { name: "Night", startTime: "04-09-2024 20:00", endTime: "04-09-2024 05:00" },
-    { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 05:00" },
-    { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 14:00" },
-    { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 14:00" },
-    { name: "Evening", startTime: "04-09-2024 12:00", endTime: "04-09-2024 21:00" },
-    { name: "Night", startTime: "04-09-2024 20:00", endTime: "04-09-2024 05:00" },
-    { name: "Morning", startTime: "04-09-2024 08:00", endTime: "04-09-2024 05:00" },
   ]
   const columns =[
     "Shift Name", "Start Time","End Time","Edit","Delete"
@@ -32,7 +16,7 @@ export default function ShiftMaster() {
   return (
     <main className="flex-1 overflow-y-auto p-6">
 
-      {/* User Master Form */}
+      {/* Shift Master Form */}
       <div className="bg-white shadow rounded-lg mb-6">
         <div className='md:flex justify-between items-center bg-[#F7F9FC] px-6 py-6 mb-6 rounded-t-lg'>
             <h3 className="text-lg font-semibold">Shift Management:</h3>

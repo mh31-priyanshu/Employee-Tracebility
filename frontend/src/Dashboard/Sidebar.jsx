@@ -1,7 +1,8 @@
 import React from 'react';
 import { ArchiveRestore, Barcode, ChartNoAxesColumn, ChartNoAxesGantt, ChevronDown, ChevronUp, DatabaseBackup, PenLine, RadioTower, User, UsersRoundIcon, WrapText } from 'lucide-react';
 import { useState } from 'react';
-import { useGlobal } from '../context/GlobalContext';
+import { useSelector, useDispatch } from 'react-redux';
+import { setSelectedPage,setOpenSideBar } from '../context/context';
 
 const sidebarItems = [
   { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/feac93fdbfa80cd5da4ec08ccf5d6af0ccbd1da5da3358fb50fa3b1a83edbc42?placeholderIfAbsent=true&apiKey=ab952a7505584a89aa779c6b786731e3", text: "Dashboard", isActive: true },
@@ -12,8 +13,19 @@ const sidebarItems = [
 
 function Sidebar() {
     const [isSettingsOpen, setIsSettingsOpen] = useState(true);
-    const { selectedPage, setSelectedPage } = useGlobal();
-    const {openSideBar, setOpenSideBar} = useGlobal();
+    const selectedPage = useSelector((state) => state.global.selectedPage);
+    const openSideBar = useSelector((state) => state.global.openSideBar);
+    const dispatch = useDispatch();
+
+    const handlePageChange = (page) => {
+        dispatch(setSelectedPage(page));
+        
+      };
+    
+      const toggleSideBar = () => {
+        
+      };
+
     return (
         <nav className={`${openSideBar?'max-md:block z-50 fixed shadow-lg w-[320px]':'max-md:hidden'} p-4 bg-white md:w-[320px]`}>
             <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/a6798a9241c17dbb1d4d5c7490ae3dfaa3561f3d4bed1a9847acf18d80520877?placeholderIfAbsent=true&apiKey=ab952a7505584a89aa779c6b786731e3" alt="Logo" className="object-contain aspect-[5.15] w-[160px] mb-[60px]" />
@@ -68,56 +80,56 @@ function Sidebar() {
                 <ul className="ml-4 mt-2 space-y-2">
 
                     <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='user-master'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
-                        onClick={() => {setSelectedPage('user-master'); setOpenSideBar(false)}}
+                        onClick={() => {dispatch(setSelectedPage('user-master')); dispatch(setOpenSideBar(false));}}
                     >
                         <User className="w-4 h-4 mr-2" />
                         User Master
                     </button>
                     
                     <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='shift-master'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
-                        onClick={() => {setSelectedPage('shift-master'); setOpenSideBar(false)}}
+                        onClick={() => {dispatch(setSelectedPage('shift-master')); dispatch(setOpenSideBar(false));}}
                     >
                         <UsersRoundIcon className="w-4 h-4 mr-2" />
                         Shift Master
                     </button>
                     
                     <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='line-master'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
-                        onClick={() => {setSelectedPage('line-master'); setOpenSideBar(false)}}
+                        onClick={() => {dispatch(setSelectedPage('line-master')); dispatch(setOpenSideBar(false));}}
                     >
                         <ChartNoAxesColumn className="w-4 h-4 mr-2" />
                         Line Master
                     </button>
                     
                     <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='line-assignment'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
-                        onClick={() => {setSelectedPage('line-assignment'); setOpenSideBar(false)}}
+                        onClick={() => {dispatch(setSelectedPage('line-assignment')); dispatch(setOpenSideBar(false));}}
                     >
                         <PenLine className="w-4 h-4 mr-2" />
                         Line Assignment
                     </button>
                     
                     <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='station-master'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
-                        onClick={() => {setSelectedPage('station-master'); setOpenSideBar(false)}}
+                        onClick={() => {dispatch(setSelectedPage('station-master')); dispatch(setOpenSideBar(false));}}
                     >
                         <RadioTower className="w-4 h-4 mr-2" />
                         Station Master
                     </button>
                     
                     <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='barcode-verify'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
-                        onClick={() => {setSelectedPage('barcode-verify'); setOpenSideBar(false)}}
+                        onClick={() => {dispatch(setSelectedPage('barcode-verify')); dispatch(setOpenSideBar(false));}}
                     >
                         <Barcode className="w-4 h-4 mr-2" />
                         Barcode Verify
                     </button>
                     
                     <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='data-backup'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
-                        onClick={() => {setSelectedPage('data-backup'); setOpenSideBar(false)}}
+                        onClick={() => {dispatch(setSelectedPage('data-backup')); dispatch(setOpenSideBar(false));}}
                     >
                         <DatabaseBackup className="w-4 h-4 mr-2" />
                         Data Backup
                     </button>
                     
                     <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='data-restore'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
-                        onClick={() => {setSelectedPage('data-restore'); setOpenSideBar(false)}}
+                        onClick={() => {dispatch(setSelectedPage('data-restore')); dispatch(setOpenSideBar(false));}}
                     >
                         <ArchiveRestore className="w-4 h-4 mr-2" />
                         Data Restore
