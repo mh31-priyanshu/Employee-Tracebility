@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ArchiveRestore, Barcode, ChartNoAxesColumn, ChartNoAxesGantt, ChevronDown, ChevronUp, DatabaseBackup, PenLine, RadioTower, User, UsersRoundIcon, WrapText } from 'lucide-react';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSelectedPage,setOpenSideBar } from '../context/context';
+import toast from 'react-hot-toast';
+import { clearUser } from '../redux/AuthSlice';
+import { useNavigate } from 'react-router-dom';
+import { userRole } from '../redux/AuthSlice';
 
 const sidebarItems = [
   { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/feac93fdbfa80cd5da4ec08ccf5d6af0ccbd1da5da3358fb50fa3b1a83edbc42?placeholderIfAbsent=true&apiKey=ab952a7505584a89aa779c6b786731e3", text: "Dashboard", isActive: true },
@@ -16,15 +20,32 @@ function Sidebar() {
     const selectedPage = useSelector((state) => state.global.selectedPage);
     const openSideBar = useSelector((state) => state.global.openSideBar);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const role = useSelector(userRole);
 
-    const handlePageChange = (page) => {
-        dispatch(setSelectedPage(page));
-        
+    const handleLogout = async () => {
+        try {
+          const response = await fetch('http://localhost:5000/user/logout', {
+            method: 'GET', // or 'GET', depending on your API
+            credentials: 'include', // Include cookies if necessary
+            headers: {
+              'Content-Type': 'application/json', // Set content type if sending JSON
+            },
+          });
+      
+          if (response.status === 200) {
+            dispatch(clearUser());
+            navigate('/login');
+            toast.success('Logout successful!');
+          } else {
+            throw new Error('Logout failed'); // Handle non-200 responses
+          }
+        } catch (error) {
+          console.error('Error during logout:', error);
+          toast.error('Logout failed. Please try again.');
+        }
       };
-    
-      const toggleSideBar = () => {
-        
-      };
+      
 
     return (
         <nav className={`${openSideBar?'max-md:block z-50 fixed shadow-lg w-[320px]':'max-md:hidden'} p-4 bg-white md:w-[320px]`}>
@@ -54,12 +75,12 @@ function Sidebar() {
                 Report
                 </a>
             </li>
-            <li>
+            <li onClick={handleLogout}>
                 <a href="#" className="flex items-center text-gray-700 hover:bg-gray-200 rounded p-2">
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
-                Run
+                Logout
                 </a>
             </li>
             <li>
@@ -79,7 +100,7 @@ function Sidebar() {
                 {isSettingsOpen && (
                 <ul className="ml-4 mt-2 space-y-2">
 
-                    <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='user-master'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
+                    <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded ${selectedPage=='user-master'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
                         onClick={() => {dispatch(setSelectedPage('user-master')); dispatch(setOpenSideBar(false));}}
                     >
                         <User className="w-4 h-4 mr-2" />
