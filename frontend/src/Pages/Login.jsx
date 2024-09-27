@@ -41,9 +41,6 @@ const Login = () => {
 
         // Step 2: Fetch User Data using the getUser API
         const userResponse = await axios.get('https://employee-tracebility-backend.vercel.app/user/getuser', {
-          headers: {
-            Authorization: `Bearer ${token}`,  // Use the token to authenticate the getUser request
-          },
           withCredentials: true,
         });
 
