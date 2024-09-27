@@ -37,14 +37,14 @@ const Login = () => {
       });
 
       if (loginResponse.status === 200) {
-        const { token } = loginResponse.data.token; // Receive token
+        const { token } = loginResponse.token; // Receive token
         
         // Step 2: Fetch User Data using the getUser API
         // const userResponse = await axios.get('https://employee-tracebility-backend.vercel.app/user/getuser', {
         //   withCredentials: true,
         // });
 
-        const user = loginResponse.data.role;  // Get user data from the response
+        const user = loginResponse.role;  // Get user data from the response
         const { role } = user;  // Extract role
         console.log(role);
         // Save token and user info in the app state
