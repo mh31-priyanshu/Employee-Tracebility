@@ -13,7 +13,9 @@ function Dashboard() {
     useEffect(() => {
       const fetchUser = async () => {
         try {
-          let user = await axios('https://employee-tracebility-backend.vercel.app/user/getuser');
+          let user = await axios.get((import.meta.env.VITE_REACT_APP_SERVER_URL)+'/user/getuser', {
+        withCredentials: true,  // for cookies
+      });
           console.log(user.data);
         } catch (error) {
           console.log(error);

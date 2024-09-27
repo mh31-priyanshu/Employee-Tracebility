@@ -32,7 +32,7 @@ const Login = () => {
 
     try {
       // Step 1: Login API Call
-      const loginResponse = await axios.post(`https://employee-tracebility-backend.vercel.app/user/login`, loginData, {
+      const loginResponse = await axios.post((import.meta.env.VITE_REACT_APP_SERVER_URL)+`/user/login`, loginData, {
         withCredentials: true,  // for cookies
       });
 
