@@ -38,7 +38,7 @@ const Login = () => {
     toast.loading('Attempting to log in...'); // Add loading toast
 
     try {
-      const response = await axios.post(`http://employee-tracebility-backend.vercel.app/user/login/${role}`, loginData, {
+      const response = await axios.post(`http://localhost:5000/user/login/${role}`, loginData, {
         withCredentials: true
       });
     
@@ -53,7 +53,6 @@ const Login = () => {
         // }
         
         const userRole = role;
-    
         login(userRole);
         dispatch(setUser({ token,  role: userRole }));
 
@@ -62,12 +61,9 @@ const Login = () => {
         navigate('/dashboard');
       }
     } catch (error) {
-    //   toast.dismiss(); // Dismiss loading toast in case of error
-    //   console.error('Error during login:', error.response?.data || error.message);
-    //   toast.error(`Login failed: ${error.response?.data?.message || 'Please check your credentials and try again.'}`);
-    console.error('Error during API call:', error);
-    console.error('Error response:', error.response);
-    console.error('Error message:', error.message);
+      toast.dismiss(); // Dismiss loading toast in case of error
+      console.error('Error during login:', error.response?.data || error.message);
+      toast.error(`Login failed: ${error.response?.data?.message || 'Please check your credentials and try again.'}`);
     }
   };
 

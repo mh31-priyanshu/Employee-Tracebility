@@ -23,6 +23,7 @@ const authSlice = createSlice({
   }
 });
 
+export const userRole = (state) => state.auth.role;
 
 
 export const { setUser, clearUser } = authSlice.actions;
