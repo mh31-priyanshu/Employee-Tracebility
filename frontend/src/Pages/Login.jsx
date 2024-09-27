@@ -32,7 +32,7 @@ const Login = () => {
 
     try {
       // Step 1: Login API Call
-      const loginResponse = await axios.post(`http://employee-tracebility-backend.vercel.app/user/login`, loginData, {
+      const loginResponse = await axios.post(`https://employee-tracebility-backend.vercel.app/user/login`, loginData, {
         withCredentials: true,  // for cookies
       });
 
@@ -40,7 +40,7 @@ const Login = () => {
         const { token } = loginResponse.data; // Receive token
 
         // Step 2: Fetch User Data using the getUser API
-        const userResponse = await axios.get('http://employee-tracebility-backend.vercel.app/user/getuser', {
+        const userResponse = await axios.get('https://employee-tracebility-backend.vercel.app/user/getuser', {
           headers: {
             Authorization: `Bearer ${token}`,  // Use the token to authenticate the getUser request
           },
