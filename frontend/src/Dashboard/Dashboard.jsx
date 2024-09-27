@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import { useSelector } from 'react-redux';
@@ -6,9 +6,22 @@ import UserMaster from '../Components/Settings/UserMaster';
 import ShiftMaster from '../Components/Settings/ShiftMaster';
 import LineMaster from '../Components/Settings/LineMaster';
 import LineAssignment from '../Components/Settings/LineAssignment';
+import axios from 'axios';
 
 function Dashboard() {
     const selectedPage = useSelector((state) => state.global.selectedPage);
+    useEffect(() => {
+      const fetchUser = async () => {
+        try {
+          let user = await axios('https://employee-tracebility-backend.vercel.app/user/getuser');
+          console.log(user.data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+  
+      fetchUser(); // Call the async function
+    }, []);
   return (
     <div className="flex overflow-hidden  bg-gray-100">
       <Sidebar />
