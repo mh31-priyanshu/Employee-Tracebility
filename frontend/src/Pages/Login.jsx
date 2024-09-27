@@ -37,22 +37,21 @@ const Login = () => {
       });
 
       if (loginResponse.status === 200) {
-        const { token } = loginResponse.data; // Receive token
-
+        const { token } = loginResponse.data.token; // Receive token
+        
         // Step 2: Fetch User Data using the getUser API
-        const userResponse = await axios.get('https://employee-tracebility-backend.vercel.app/user/getuser', {
-          withCredentials: true,
-        });
+        // const userResponse = await axios.get('https://employee-tracebility-backend.vercel.app/user/getuser', {
+        //   withCredentials: true,
+        // });
 
-        const user = userResponse.data.user;  // Get user data from the response
-        const { role, first_name } = user;  // Extract role and first name
+        const user = loginResponse.data.role;  // Get user data from the response
+        const { role } = user;  // Extract role
         console.log(role);
         // Save token and user info in the app state
         login(role);
         dispatch(setUser({ token, role }));
 
         toast.dismiss(); // Dismiss loading toast
-        toast.success(`Login successful! Welcome, ${first_name}!`);
         navigate('/dashboard'); // Navigate to the dashboard
       }
     } catch (error) {
