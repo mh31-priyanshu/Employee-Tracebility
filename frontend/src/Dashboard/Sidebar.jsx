@@ -25,7 +25,7 @@ function Sidebar() {
 
     const handleLogout = async () => {
         try {
-          const response = await fetch('http://localhost:5000/user/logout', {
+          const response = await fetch('https://employee-tracebility-backend.vercel.app/user/logout', {
             method: 'GET', // or 'GET', depending on your API
             credentials: 'include', // Include cookies if necessary
             headers: {
