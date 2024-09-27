@@ -32,27 +32,42 @@ const Login = () => {
 
     try {
       // Step 1: Login API Call
-      const loginResponse = await axios.post((import.meta.env.VITE_REACT_APP_SERVER_URL)+`/user/login`, loginData, {
-        withCredentials: true,  // for cookies
-      });
-
+      const loginResponse = await axios.post(
+        `${import.meta.env.VITE_REACT_APP_SERVER_URL}/user/login`,
+        loginData,
+        {
+          withCredentials: true, // for handling cookies
+        }
+      );
+    
       if (loginResponse.status === 200) {
-        const { token } = loginResponse.data; // Receive token
+        const { token, role } = loginResponse.data; // Extract both token and role
         
-        const { role } = loginResponse.data;  // Extract role
         console.log(role);
+        
+        // Step 2: Make an authenticated request (if needed) or use the token and role
+        await axios.get(`${import.meta.env.VITE_REACT_APP_SERVER_URL}/user/getuser`, {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,  // Use backticks for template string
+          }
+        });
+    
         // Save token and user info in the app state
         login(role);
         dispatch(setUser({ token, role }));
-
+    
         toast.dismiss(); // Dismiss loading toast
         navigate('/dashboard'); // Navigate to the dashboard
       }
     } catch (error) {
       toast.dismiss(); // Dismiss loading toast in case of error
       console.error('Error during login:', error.response?.data || error.message);
-      toast.error(`Login failed: ${error.response?.data?.message || 'Please check your credentials and try again.'}`);
+      toast.error(
+        `Login failed: ${error.response?.data?.message || 'Please check your credentials and try again.'}`
+      );
     }
+    
   };
 
   return (
