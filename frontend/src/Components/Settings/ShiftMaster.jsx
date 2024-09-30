@@ -9,47 +9,14 @@ export default function ShiftMaster() {
   const [endTime, setEndTime] = useState('');
   const [active, setActive] = useState(false);
   const [editingShiftId, setEditingShiftId] = useState(null);
+  const [refreshTable, setRefreshTable] = useState(false); // Add state to track re-render trigger
 
-  const columns = ["Shift Id", "Shift Name", "Start Time", "End Time", "Edit", "Delete"];
+  const columns = ["Shift Id", "Shift Name", "Start Time", "End Time", "Active", "Edit", "Delete"];
 
-  // Fetch shifts (all shifts) from the API when the component mounts
-  const fetchShifts = async () => {
-    try {
-      const response = await fetch((import.meta.env.VITE_REACT_APP_SERVER_URL)+'/shift/getall', {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.status === 200) {
-        const data = await response.json();
-        if (data.success) {
-          const transformedShifts = data.data.map(shift => ({
-            id: shift.shift_id,
-            name: shift.shift_name,
-            startTime: shift.start_time,
-            endTime: shift.end_time,
-          }));
-          setShifts(transformedShifts);
-        } else {
-          throw new Error('Failed to fetch shifts');
-        }
-      } else {
-        throw new Error('Failed to fetch shifts');
-      }
-    } catch (error) {
-      console.error('Error during fetching shifts:', error);
-      toast.error('Fetching shifts failed. Please try again.');
-    }
-  };
-
-  useEffect(() => {
-    fetchShifts(); // Fetch all shifts on component mount
-  }, []);
-
-  // Handle Edit Click (with API call to fetch single shift)
+  const transformedShifts = shifts.map(shift => ({
+    ...shift,
+    active: shift.active === 1 ? 'True' : 'False', // Convert 1 to 'True' and 0 to 'False'
+  }));
   const handleEditClick = async (shift) => {
     try {
       const response = await fetch((import.meta.env.VITE_REACT_APP_SERVER_URL)+`/shift/get/${shift.id}`, {
@@ -79,8 +46,43 @@ export default function ShiftMaster() {
       toast.error('Fetching shift failed. Please try again.');
     }
   };
+  const fetchShifts = async () => {
+    try {
+      const response = await fetch((import.meta.env.VITE_REACT_APP_SERVER_URL)+'/shift/getall', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-  // Handle Save (either create or update a shift)
+      if (response.status === 200) {
+        const data = await response.json();
+        if (data.success) {
+          const transformedShifts = data.data.map(shift => ({
+            id: shift.shift_id,
+            name: shift.shift_name,
+            startTime: shift.start_time,
+            endTime: shift.end_time,
+            active: shift.active
+          }));
+          setShifts(transformedShifts);
+        } else {
+          throw new Error('Failed to fetch shifts');
+        }
+      } else {
+        throw new Error('Failed to fetch shifts');
+      }
+    } catch (error) {
+      console.error('Error during fetching shifts:', error);
+      toast.error('Fetching shifts failed. Please try again.');
+    }
+  };
+
+  useEffect(() => {
+    fetchShifts(); // Fetch all shifts on component mount
+  }, [refreshTable]); // Re-fetch shifts when refreshTable state changes
+
   const handleSave = async () => {
     const formattedStartTime = startTime.length === 5 ? `${startTime}:00` : startTime;
     const formattedEndTime = endTime.length === 5 ? `${endTime}:00` : endTime;
@@ -89,6 +91,7 @@ export default function ShiftMaster() {
       shift_name: shiftName,
       start_time: formattedStartTime,
       end_time: formattedEndTime,
+      active: active, // Include active status in the payload
     };
 
     let apiUrl = 'http://localhost:5000/shift/addshift'; // Default for creating new shift
@@ -118,6 +121,7 @@ export default function ShiftMaster() {
             name: shiftName,
             startTime: formattedStartTime,
             endTime: formattedEndTime,
+            active: active, // Include active in the updated shift
           };
 
           if (editingShiftId) {
@@ -128,11 +132,15 @@ export default function ShiftMaster() {
             setShifts((prevShifts) => [...prevShifts, updatedShift]);
           }
 
+          // Trigger table refresh
+          setRefreshTable(prev => !prev); // Toggle refreshTable to re-fetch shifts
+
           // Reset form
           setEditingShiftId(null);
           setShiftName('');
           setStartTime('');
           setEndTime('');
+          setActive(false); // Reset active status
         }
       } else {
         throw new Error('Save failed');
@@ -140,6 +148,38 @@ export default function ShiftMaster() {
     } catch (error) {
       console.error('Error during saving shift:', error);
       toast.error('Saving shift failed. Please try again.');
+    }
+  };
+
+  const handleDeleteClick = async (shiftId) => {
+    if (window.confirm('Are you sure you want to delete this shift?')) {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_REACT_APP_SERVER_URL}/shift/delete/${shiftId}`, {
+          method: 'DELETE',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.status === 200) {
+          const result = await response.json();
+          if (result.success) {
+            toast.success('Shift deleted successfully');
+            // Update shifts by filtering out the deleted shift
+            setShifts(prevShifts => prevShifts.filter(shift => shift.id !== shiftId));
+            // Trigger table refresh
+            setRefreshTable(prev => !prev);
+          } else {
+            throw new Error('Delete failed');
+          }
+        } else {
+          throw new Error('Delete failed');
+        }
+      } catch (error) {
+        console.error('Error during deleting shift:', error);
+        toast.error('Deleting shift failed. Please try again.');
+      }
     }
   };
 
@@ -156,6 +196,7 @@ export default function ShiftMaster() {
                 setShiftName('');
                 setStartTime('');
                 setEndTime('');
+                setActive(false);
                 setEditingShiftId(null); // Reset the form
               }}
             >
@@ -177,14 +218,6 @@ export default function ShiftMaster() {
               onChange={(e) => setShiftName(e.target.value)}
             />
           </div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
-            Active
-            <input type="checkbox" 
-            value={active}
-            onChange={(e) => setActive(e.target.value)}
-            class="sr-only peer"  />
-            <div class="relative w-11 h-6 px-4 bg-gray-200 rounded-full peer dark:bg-gray-700  peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 mt-2 cursor-pointer"></div>
-          </label>
           <div>
             <label htmlFor="start-time" className="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
             <input
@@ -206,17 +239,25 @@ export default function ShiftMaster() {
             />
           </div>
           <div>
-          
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Active
+            <input type="checkbox" 
+            checked={active} // Use checked to bind the state correctly
+            onChange={(e) => setActive(e.target.checked)} // Update the state based on checked status
+            className="sr-only peer"/>
+            <div className="relative w-11 h-6 px-4 bg-gray-200 rounded-full peer dark:bg-gray-700  peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 mt-2 cursor-pointer"></div>
+          </label>
           </div>
         </form>
       </div>
 
       {/* Shifts Table */}
       <TableSearch
-        data={shifts}
+        data={transformedShifts}
         header={columns}
         name="Shift Management"
         onEditClick={handleEditClick} // Pass edit handler to TableSearch
+        onDeleteClick={handleDeleteClick}
       />
     </main>
   );

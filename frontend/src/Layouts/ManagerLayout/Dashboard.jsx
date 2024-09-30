@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import Sidebar from '../SupervisorLayout/Sidebar';
-import Header from '../SupervisorLayout/Header';
+import Sidebar from '../ManagerLayout/Sidebar';
+import Header from '../ManagerLayout/Header';
 import { useSelector } from 'react-redux';
 import UserMaster from '../../Components/Settings/UserMaster';
 import ShiftMaster from '../../Components/Settings/ShiftMaster';
