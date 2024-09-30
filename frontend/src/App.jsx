@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import Dashboard from './Dashboard/Dashboard';
+import Dashboard from './Layouts/WorkerLayout/Dashboard';
 import Login from './Pages/Login';
 
 // Selector to get authentication state from Redux store

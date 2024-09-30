@@ -7,6 +7,7 @@ export default function ShiftMaster() {
   const [shiftName, setShiftName] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
+  const [active, setActive] = useState(false);
   const [editingShiftId, setEditingShiftId] = useState(null);
 
   const columns = ["Shift Id", "Shift Name", "Start Time", "End Time", "Edit", "Delete"];
@@ -178,8 +179,11 @@ export default function ShiftMaster() {
           </div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
             Active
-            <input type="checkbox" value="false" class="sr-only peer"  />
-            <div class="relative w-11 h-6 px-8 bg-gray-200 rounded-full peer dark:bg-gray-700  peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+            <input type="checkbox" 
+            value={active}
+            onChange={(e) => setActive(e.target.value)}
+            class="sr-only peer"  />
+            <div class="relative w-11 h-6 px-4 bg-gray-200 rounded-full peer dark:bg-gray-700  peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 mt-2 cursor-pointer"></div>
           </label>
           <div>
             <label htmlFor="start-time" className="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
