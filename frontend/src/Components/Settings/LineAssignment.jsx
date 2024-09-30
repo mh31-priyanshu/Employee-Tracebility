@@ -56,6 +56,8 @@ export default function LineAssignment() {
 
     setCurrentShift(getCurrentShift());
   }, []);
+  const handleEditClick = () =>{}
+  const handleDeleteClick = () =>{}
   return (
     <main className="flex-1 overflow-y-auto p-6">
 
@@ -103,7 +105,7 @@ export default function LineAssignment() {
         </form>
         
       </div>
-      <TableSearch name="Line Assignment Table" header={columns} data={lines}/>
+      <TableSearch name="Line Assignment Table" header={columns} data={lines} onDeleteClick={handleDeleteClick} onEditClick={handleEditClick}/>
     </main>
   );
 }

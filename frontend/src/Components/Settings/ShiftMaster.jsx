@@ -151,10 +151,10 @@ export default function ShiftMaster() {
     }
   };
 
-  const handleDeleteClick = async (shiftId) => {
+  const handleDeleteClick = async (shift) => {
     if (window.confirm('Are you sure you want to delete this shift?')) {
       try {
-        const response = await fetch(`${import.meta.env.VITE_REACT_APP_SERVER_URL}/shift/delete/${shiftId}`, {
+        const response = await fetch(`${import.meta.env.VITE_REACT_APP_SERVER_URL}/shift/delete/${shift.id}`, {
           method: 'DELETE',
           credentials: 'include',
           headers: {
@@ -167,7 +167,7 @@ export default function ShiftMaster() {
           if (result.success) {
             toast.success('Shift deleted successfully');
             // Update shifts by filtering out the deleted shift
-            setShifts(prevShifts => prevShifts.filter(shift => shift.id !== shiftId));
+            setShifts(prevShifts => prevShifts.filter(shift => shift.id !== shift.id));
             // Trigger table refresh
             setRefreshTable(prev => !prev);
           } else {
