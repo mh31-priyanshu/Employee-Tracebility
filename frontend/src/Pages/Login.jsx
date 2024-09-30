@@ -58,7 +58,13 @@ const Login = () => {
         dispatch(setUser({ token, role }));
     
         toast.dismiss(); // Dismiss loading toast
-        navigate('/dashboard'); // Navigate to the dashboard
+        if (role === 'supervisor') {
+          navigate('/supervisor');
+        } else if (role === 'worker') {
+          navigate('/worker');
+        } else if (role === 'manager') {
+          navigate('/manager');
+        } // Navigate to the dashboard
       }
     } catch (error) {
       toast.dismiss(); // Dismiss loading toast in case of error

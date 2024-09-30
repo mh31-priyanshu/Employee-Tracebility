@@ -1,31 +1,48 @@
-import { useSelector } from 'react-redux';
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
-import Dashboard from './Layouts/ManagerLayout/Dashboard';
-import Login from './Pages/Login';
+import React from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Login from './Pages/Login'
+import { Toaster } from 'react-hot-toast'
 
-// Selector to get authentication state from Redux store
-const isAuthenticated = () => {
-  const token = useSelector((state) => state.auth.token);
-  return !!token;  // Returns true if token exists
-}
+import SupervisorLayout from './RoutesRedirector/SupervisorLayout'
+import PublicLayout from './RoutesRedirector/PublicLayout'
+import WorkerLayout from './RoutesRedirector/WorkerLayout'
+import ManagerLayout from './RoutesRedirector/ManagerLayout'
 
-function App() {
-  const loggedIn = isAuthenticated();
 
+import WorkersDashboard from './Layouts/WorkerLayout/Dashboard'
+import SupervisorsDashboard from './Layouts/SupervisorLayout/Dashboard'
+import ManagersDashboard from './Layouts/ManagerLayout/Dashboard'
+
+const App = () => {
   return (
     <>
       <BrowserRouter>
         <Toaster />
         <Routes>
-          {/* Redirect to dashboard if user is already logged in */}
-          <Route path='/' element={loggedIn ? <Navigate to="/dashboard" /> : <Login />} />
-          <Route path='/login' element={loggedIn ? <Navigate to="/dashboard" /> : <Login />} />
-          <Route path='/dashboard' element={loggedIn ? <Dashboard /> : <Navigate to="/login" />} />
+          {/* Public routes */}
+          <Route path='/' element={<PublicLayout/>}>
+            <Route index element={<Login />} />
+            <Route path='login' element={<Login />} />
+          </Route>
+
+          {/* Worker routes */}
+          <Route path='/worker' element={<WorkerLayout />}>
+            <Route index element={<WorkersDashboard/>} />
+          </Route>
+
+          {/* Supervisor routes */}
+          <Route path='/supervisor' element={<SupervisorLayout />}>
+            <Route index element={<SupervisorsDashboard />} />
+          </Route>
+
+          {/* MAnager routes */}
+          <Route path='/manager' element={<ManagerLayout/>}>
+            <Route index element={<ManagersDashboard/>} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </>
-  );
+  )
 }
 
-export default App;
+export default App
