@@ -18,6 +18,7 @@ export default function ShiftMaster() {
     active: shift.active === 1 ? 'True' : 'False', // Convert 1 to 'True' and 0 to 'False'
   }));
   const handleEditClick = async (shift) => {
+    console.log((import.meta.env.VITE_REACT_APP_SERVER_URL));
     try {
       const response = await fetch((import.meta.env.VITE_REACT_APP_SERVER_URL)+`/shift/get/${shift.id}`, {
         method: 'GET',
@@ -94,11 +95,11 @@ export default function ShiftMaster() {
       active: active, // Include active status in the payload
     };
 
-    let apiUrl = 'http://localhost:5000/shift/addshift'; // Default for creating new shift
+    let apiUrl = (import.meta.env.VITE_REACT_APP_SERVER_URL)+'/shift/addshift'; // Default for creating new shift
     let method = 'POST';
 
     if (editingShiftId) {
-      apiUrl = `http://localhost:5000/shift/updateshift/${editingShiftId}`; // Update for editing shift
+      apiUrl = (import.meta.env.VITE_REACT_APP_SERVER_URL)+`/shift/updateshift/${editingShiftId}`; // Update for editing shift
       method = 'PUT';
     }
 
