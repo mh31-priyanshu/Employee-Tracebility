@@ -6,7 +6,6 @@ import { setSelectedPage, setOpenSideBar } from '../../context/context';
 import toast from 'react-hot-toast';
 import { clearUser } from '../../redux/AuthSlice';
 import { useNavigate } from 'react-router-dom';
-import { userRole } from '../../redux/AuthSlice';
 
 const sidebarItems = [
   { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/feac93fdbfa80cd5da4ec08ccf5d6af0ccbd1da5da3358fb50fa3b1a83edbc42?placeholderIfAbsent=true&apiKey=ab952a7505584a89aa779c6b786731e3", text: "Dashboard", isActive: true },
@@ -21,30 +20,37 @@ function Sidebar() {
     const openSideBar = useSelector((state) => state.global.openSideBar);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const role = useSelector(userRole);
+    const token = useSelector((state) => state.auth.token);
 
+    // Handle logout action
     const handleLogout = async () => {
-        try {
-          const response = await fetch((import.meta.env.VITE_REACT_APP_SERVER_URL)+'/user/logout', {
-            method: 'GET', // or 'GET', depending on your API
-            credentials: 'include', // Include cookies if necessary
-            headers: {
-              'Content-Type': 'application/json', // Set content type if sending JSON
-            },
-          });
-      
-          if (response.status === 200) {
-            dispatch(clearUser());
-            navigate('/login');
-            toast.success('Logout successful!');
-          } else {
-            throw new Error('Logout failed'); // Handle non-200 responses
-          }
-        } catch (error) {
-          console.error('Error during logout:', error);
-          toast.error('Logout failed. Please try again.');
+      try {
+        const response = await fetch((import.meta.env.VITE_REACT_APP_SERVER_URL) + '/user/logout', {
+          method: 'GET',
+          credentials: 'include', // Include cookies if necessary
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+    
+        if (response.status === 200) {
+          dispatch(clearUser());
+          toast.success('Logout successful!');
+        } else {
+          throw new Error('Logout failed');
         }
-      };
+      } catch (error) {
+        console.error('Error during logout:', error);
+        toast.error('Logout failed. Please try again.');
+      }
+    };
+
+  // Redirect to login when token is cleared (logged out)
+  useEffect(() => {
+    if (!token) {
+      navigate('/login');
+    }
+  }, [token, navigate]);
       
 
     return (
