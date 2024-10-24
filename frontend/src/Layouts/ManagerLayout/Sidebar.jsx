@@ -135,6 +135,13 @@ function Sidebar() {
                         Station Master
                     </button>
                     
+                    <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='controller-family'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
+                        onClick={() => {dispatch(setSelectedPage('controller-family')); dispatch(setOpenSideBar(false));}}
+                    >
+                        <RadioTower className="w-4 h-4 mr-2" />
+                        Controller Family
+                    </button>
+                    
                     <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='barcode-verify'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
                         onClick={() => {dispatch(setSelectedPage('barcode-verify')); dispatch(setOpenSideBar(false));}}
                     >

@@ -105,7 +105,7 @@ export default function LineMaster() {
   const handleDeleteClick = async (line) => {
     if (window.confirm('Are you sure you want to delete this line?')) {
       try {
-        const response = await fetch(`${import.meta.env.VITE_REACT_APP_SERVER_URL}/line/deleteline/${line.id}`, {
+        const response = await fetch(`${import.meta.env.VITE_REACT_APP_SERVER_URL}/line/delete/${line.id}`, {
           method: 'DELETE',
           credentials: 'include',
           headers: {

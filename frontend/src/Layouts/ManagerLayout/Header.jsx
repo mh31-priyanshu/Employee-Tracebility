@@ -14,6 +14,7 @@ function Header() {
     'barcode-verify':'Barcode Verify',
     'data-backup':'Data Backup',
     'data-restore':'Data Restore',
+    'controller-family': 'Controller Family'
   }
   const selectedPage = useSelector((state) => state.global.selectedPage);
   const openSideBar = useSelector((state) => state.global.openSideBar);

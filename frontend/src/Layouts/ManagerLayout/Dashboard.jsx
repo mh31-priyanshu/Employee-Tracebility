@@ -7,6 +7,8 @@ import ShiftMaster from '../../Components/Settings/ShiftMaster';
 import LineMaster from '../../Components/Settings/LineMaster';
 import LineAssignment from '../../Components/Settings/LineAssignment';
 import axios from 'axios';
+import StationMaster from '../../Components/Settings/StationMaster';
+import ControllerFamily from '../../Components/Settings/ControllerFamily';
 
 function Dashboard() {
     const selectedPage = useSelector((state) => state.global.selectedPage);
@@ -34,7 +36,8 @@ function Dashboard() {
         {selectedPage=='shift-master' && <ShiftMaster />}
         {selectedPage=='line-master' && <LineMaster />}
         {selectedPage=='line-assignment' && <LineAssignment />}
-        {selectedPage=='station-master' && <div>awnfibn</div>}
+        {selectedPage=='station-master' && <div><StationMaster /></div>}
+        {selectedPage=='controller-family' && <div><ControllerFamily /></div>}
       </main>
     </div>
   );
