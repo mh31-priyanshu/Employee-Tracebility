@@ -77,11 +77,13 @@ const Login = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto my-24 p-8 rounded-lg shadow-lg bg-white">
-      <h2 className="text-center mb-8 text-2xl text-gray-800">Login</h2>
+    <div className="bg-header h-screen">
+      <div className="h-24"></div>
+      <div className="max-w-md mx-auto  p-8 rounded-lg shadow-lg bg-hover text-primary-font">
+      <h2 className="text-center mb-8 text-2xl ">Login</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-5">
-          <label htmlFor="employee_id" className="block mb-2 font-bold text-gray-700">Employee ID</label>
+          <label htmlFor="employee_id" className="block mb-2 font-bold ">Employee ID</label>
           <input
             type="text"
             id="employee_id"
@@ -93,7 +95,7 @@ const Login = () => {
           />
         </div>
         <div className="mb-5">
-          <label htmlFor="password" className="block mb-2 font-bold text-gray-700">Password</label>
+          <label htmlFor="password" className="block mb-2 font-bold ">Password</label>
           <input
             type="password"
             id="password"
@@ -106,11 +108,12 @@ const Login = () => {
         </div>
         <button
           type="submit"
-          className="w-full p-3 text-lg font-semibold text-white bg-blue-500 rounded-md hover:bg-blue-700 transition duration-300"
+          className="w-full p-3 text-lg font-semibold text-white bg-button rounded-md hover:bg-header transition duration-300"
         >
           Login
         </button>
       </form>
+    </div>
     </div>
   );
 };

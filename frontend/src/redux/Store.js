@@ -26,7 +26,7 @@ const globalSlice = createSlice({
 // Theme slice for handling theme state
 const themeSlice = createSlice({
   name: 'theme',
-  initialState: themes.default,
+  initialState: themes.lavendar,
   reducers: {
     setTheme: (state, action) => {
       const newTheme = themes[action.payload];

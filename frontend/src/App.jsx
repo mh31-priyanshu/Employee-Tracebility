@@ -15,14 +15,14 @@ import ManagersDashboard from './Layouts/ManagerLayout/Dashboard'
 
 const App = () => {
   return (
-    <>
+    < >
       <BrowserRouter>
         <Toaster />
         <Routes>
           {/* Public routes */}
           <Route path='/' element={<PublicLayout/>}>
-            <Route index element={<Login />} />
-            <Route path='login' element={<Login />} />
+            <Route index element={<Login/>} />
+            <Route path='login' element={<Login/>} />
           </Route>
 
           {/* Worker routes */}

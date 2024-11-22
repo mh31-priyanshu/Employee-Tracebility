@@ -12,6 +12,7 @@ function Header() {
     'line-master':'Line Master',
     'line-assignment':'Line Assignment',
     'station-master':'Station Master',
+    'station-linking':'Station Linking',
     'barcode-verify':'Barcode Verify',
     'data-backup':'Data Backup',
     'data-restore':'Data Restore',

@@ -1,15 +1,15 @@
 export const themes = {
-  default: {
+  ocean: {
     primaryColor: '#FFFFFF',
-    bgColor: '#EEFOF2',
-    primaryHeader: '#F7F9FC',
-    hoverColor: '#E8FIFD',
-    buttonColor: '#1570EF',
-    headerFontColor: '#383E49',
-    hoverFontColor: '#1570EF',
-    primaryFontColor: '#5D6679',
-    primaryIconColor: '#5D6679',
-    cardHeader: "#F7F9FC",
+    bgColor: '#F0F2F7',
+    primaryHeader: '#051135',
+    hoverColor: '#307BF6',
+    buttonColor: '#307BF6',
+    headerFontColor: '#B9C3CF',
+    hoverFontColor: '#FFFFFF', 
+    primaryFontColor: '#2B2D40',
+    primaryIconColor: '#B9C3CF ',
+    cardHeader: "#E6EDF9",
   },
   lavendar:{
     primaryColor: '#FFFFFF',
@@ -23,18 +23,6 @@ export const themes = {
     primaryFontColor: '#28282B',
     primaryIconColor: '#AEA5D2',
     cardHeader: "#ECEDF8"
-  },
-  ocean: {
-    primaryColor: '#FFFFFF',
-    bgColor: '#F0F2F7',
-    primaryHeader: '#051135',
-    hoverColor: '#307BF6',
-    buttonColor: '#307BF6',
-    headerFontColor: '#B9C3CF',
-    hoverFontColor: '#FFFFFF', 
-    primaryFontColor: '#2B2D40',
-    primaryIconColor: '#B9C3CF ',
-    cardHeader: "#E6EDF9",
   },
   grassfield: {
     primaryColor: '#E5F0EF',

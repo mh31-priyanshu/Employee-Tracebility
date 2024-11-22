@@ -134,6 +134,12 @@ function Sidebar() {
                         <RadioTower className="w-4 h-4 mr-2" />
                         Station Master
                     </button>
+                    <button className={`flex items-center p-2 w-full hover:bg-hover rounded  ${selectedPage=='station-linking'?'text-hover-font bg-hover':'text-header-font'} hover:text-hover-font`}
+                        onClick={() => {dispatch(setSelectedPage('station-linking')); dispatch(setOpenSideBar(false));}}
+                    >
+                        <RadioTower className="w-4 h-4 mr-2" />
+                        Station Linking
+                    </button>
                     
                     <button className={`flex items-center p-2 w-full hover:bg-hover rounded  ${selectedPage=='controller-family'?'text-hover-font bg-hover':'text-header-font'} hover:text-hover-font`}
                         onClick={() => {dispatch(setSelectedPage('controller-family')); dispatch(setOpenSideBar(false));}}
