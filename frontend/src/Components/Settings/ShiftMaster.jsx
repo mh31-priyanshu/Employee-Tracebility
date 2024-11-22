@@ -188,7 +188,7 @@ export default function ShiftMaster() {
     <main className="flex-1 overflow-y-auto p-6">
       {/* Shift Master Form */}
       <div className="bg-white shadow rounded-lg mb-6">
-        <div className='md:flex justify-between items-center bg-[#F7F9FC] px-6 py-6 mb-6 rounded-t-lg'>
+        <div className='md:flex justify-between items-center bg-card-header px-6 py-6 mb-6 rounded-t-lg'>
           <h3 className="text-lg font-semibold">Shift Management:</h3>
           <div className="flex space-x-2 max-md:mt-3">
             <button 
@@ -203,7 +203,7 @@ export default function ShiftMaster() {
             >
               Reset
             </button>
-            <button className="px-8 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600" onClick={handleSave}>
+            <button className="px-8 py-2 bg-button text-white rounded-lg hover:bg-header" onClick={handleSave}>
               Save
             </button>
           </div>

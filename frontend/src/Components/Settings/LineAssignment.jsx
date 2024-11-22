@@ -64,11 +64,11 @@ export default function LineAssignment() {
 
       {/* User Master Form */}
       <div className="bg-white shadow rounded-lg mb-6">
-        <div className='md:flex justify-between items-center bg-[#F7F9FC] px-6 py-6 mb-6 rounded-t-lg'>
+        <div className='md:flex justify-between items-center bg-card-header px-6 py-6 mb-6 rounded-t-lg'>
             <h3 className="text-lg font-semibold">Line Assignment:</h3>
             <div className="flex  space-x-2  max-md:mt-3">
                 <button className="px-8 py-2 border rounded-lg text-gray-600 hover:bg-gray-100">Reset</button>
-                <button className="px-8 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Save</button>
+                <button className="px-8 py-2 bg-button text-white rounded-lg hover:bg-header">Save</button>
             </div>
         </div>
         <form className="grid grid-cols-1 md:grid-cols-3 gap-4 px-6 pb-12">

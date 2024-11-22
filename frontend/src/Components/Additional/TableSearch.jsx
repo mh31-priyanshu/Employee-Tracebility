@@ -13,7 +13,7 @@ export default function TableSearch({ name, header, data = [], onEditClick, onDe
 
   return (
     <div className="bg-white shadow rounded-lg">
-      <div className='md:flex justify-between items-center bg-[#F7F9FC] px-6 py-6 mb-6 rounded-t-lg'>
+      <div className='md:flex justify-between items-center bg-card-header px-6 py-6 mb-6 rounded-t-lg'>
         <h3 className="text-lg font-semibold">{name}:</h3>
         <div className="flex max-md:justify-between space-x-2">
           <input 
@@ -23,7 +23,7 @@ export default function TableSearch({ name, header, data = [], onEditClick, onDe
             value={searchTerm} 
             onChange={(e) => setSearchTerm(e.target.value)}  
           />
-          <button className="px-8 py-2 max-md:px-6 max-md:py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 max-md:mt-2">
+          <button className="px-8 py-2 max-md:px-6 max-md:py-1 bg-button text-white rounded-lg hover:bg-header max-md:mt-2">
             Export
           </button>
         </div>
