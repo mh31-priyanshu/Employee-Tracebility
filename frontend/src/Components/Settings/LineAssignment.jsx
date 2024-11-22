@@ -73,8 +73,8 @@ export default function LineAssignment() {
         </div>
         <form className="grid grid-cols-1 md:grid-cols-3 gap-4 px-6 pb-12">
           <div>
-            <label htmlFor="shift-name" className="block text-sm font-medium text-gray-700 mb-1">Line Name</label>
-            <input type="text" id="shift-name" className="w-full p-2 border rounded" />
+            <label htmlFor="shift-name" className="block text-sm font-medium text-gray-700 mb-1">Employee ID</label>
+            <input type="text" id="Employee-ID" className="w-full p-2 border rounded" />
           </div>
           <div>
             <label htmlFor="start-time" className="block text-sm font-medium text-gray-700 mb-1">Employee Name</label>
