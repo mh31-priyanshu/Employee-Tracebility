@@ -1,9 +1,10 @@
-// Import dependencies
 import { configureStore } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import AuthSlice from './AuthSlice';
-import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import AuthSlice from './AuthSlice';
+import { themes } from './themes';
+
 
 // Global slice for handling UI-related global state
 const globalSlice = createSlice({
@@ -22,27 +23,45 @@ const globalSlice = createSlice({
   },
 });
 
-// Export global actions
-export const { setSelectedPage, setOpenSideBar } = globalSlice.actions;
+// Theme slice for handling theme state
+const themeSlice = createSlice({
+  name: 'theme',
+  initialState: themes.default,
+  reducers: {
+    setTheme: (state, action) => {
+      const newTheme = themes[action.payload];
+      return newTheme ? { ...newTheme } : state;
+    },
+  },
+});
 
 // Configure persistence for AuthSlice
 const persistConfig = {
   key: 'root',
   storage,
+  whitelist: ['auth', 'theme'] // Specify which reducers to persist
 };
 
-const persistedAuthReducer = persistReducer(persistConfig, AuthSlice);
+const rootReducer = {
+  global: globalSlice.reducer,
+  auth: persistReducer(persistConfig, AuthSlice),
+  theme: themeSlice.reducer,
+};
 
-// Configure the store
 export const store = configureStore({
-  reducer: {
-    global: globalSlice.reducer,         // Global slice reducer
-    auth: persistedAuthReducer,          // Persisted Auth slice reducer
-  },
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) => 
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['persist/PERSIST'],
+      },
+    }),
 });
 
-// Configure persistor for redux-persist
 export const persistor = persistStore(store);
 
-// Export the store as default
+// Export actions
+export const { setSelectedPage, setOpenSideBar } = globalSlice.actions;
+export const { setTheme } = themeSlice.actions;
+
 export default store;

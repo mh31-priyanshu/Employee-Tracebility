@@ -40,7 +40,7 @@ export default function UserMaster() {
       <img 
         src={employee.barcode} 
         alt={`Barcode for ${employee.employee_id}`} 
-        style={{ width: '400px', height: 'auto' }} 
+        style={{ width: '100px', height: 'auto' }} 
       />
     ),
     qualification: employee.qualification,
@@ -173,7 +173,7 @@ export default function UserMaster() {
   return (
     <main className="flex-1 overflow-y-auto p-6">
       <div className="bg-white shadow rounded-lg mb-6">
-        <div className='md:flex justify-between items-center bg-[#F7F9FC] px-6 py-6 mb-6 rounded-t-lg'>
+        <div className='md:flex justify-between items-center bg-card-header px-6 py-6 mb-6 rounded-t-lg'>
           <h3 className="text-lg font-semibold">User Master:</h3>
           <div className="flex space-x-2 max-md:mt-3">
             <button className="px-8 py-2 border rounded-lg text-gray-600 hover:bg-gray-100">Reset</button>

@@ -9,5 +9,20 @@ body::-webkit-scrollbar {
 .body {
   -ms-overflow-style: none;  /* Internet Explorer 10+ */
   scrollbar-width: none;  /* Firefox */
+  background-color: var(--bg-color);
+  color: var(--primary-font-color);
 }
-  
+
+/* index.css */
+:root {
+  --primary-color: #FFFFFF;
+  --bg-color: #EEFOF2;
+  --primary-header: #F7F9FC;
+  --hover-color: #E8FIFD;
+  --button-color: #1570EF;
+  --header-font-color: #383E49;
+  --hover-font-color: #1570EF;
+  --primary-font-color: #5D6679;
+  --primary-icon-color: #5D6679;
+  --card-header: #F7F9FC;
+}

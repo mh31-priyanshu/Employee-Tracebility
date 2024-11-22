@@ -3,6 +3,7 @@ import React from 'react';
 import DateObject from "react-date-object";
 import { useSelector, useDispatch } from 'react-redux';
 import { setOpenSideBar } from '../../context/context';
+import ThemeSwitcher from '../../Components/Additional/ThemeSwitcher';
 
 function Header() {
   const Overview = {
@@ -29,36 +30,37 @@ function Header() {
   });
 
   return (
-    <header className=''>
-      <div className='flex justify-between bg-white px-[30px] items-center py-7'>
+    <header className='bg-header'>
+      <div className='flex justify-between  px-[30px] items-center py-7'>
         <div>
           <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/a6798a9241c17dbb1d4d5c7490ae3dfaa3561f3d4bed1a9847acf18d80520877?placeholderIfAbsent=true&apiKey=ab952a7505584a89aa779c6b786731e3" alt="Logo" 
           className="md:hidden w-[140px]" />
             
         </div>
-        <div className="flex gap-10 max-md:gap-5 items-start bg-white">
-          <Moon className="w-[30px] h-[30px] rounded-3xl cursor-pointer" strokeWidth={0.7} />
-          <CircleUserRound className="w-[30px] h-[30px] rounded-3xl cursor-pointer" strokeWidth={0.7} />
+        
+        <div className="flex gap-10 max-md:gap-5 items-start ">
+          <ThemeSwitcher></ThemeSwitcher>
+          <CircleUserRound className="w-[30px] h-[30px] rounded-3xl cursor-pointer text-header-font" strokeWidth={0.7} />
           {openSideBar?(
-            <X className="w-[30px] h-[30px] rounded-3xl cursor-pointer md:hidden" 
+            <X className="w-[30px] h-[30px] rounded-3xl cursor-pointer md:hidden text-header-font" 
             strokeWidth={0.7}
             onClick={()=>{toggleSideBar()}}
             />
             
           ):(
-            <MenuIcon className="w-[30px] h-[30px] rounded-3xl cursor-pointer md:hidden" 
+            <MenuIcon className="w-[30px] h-[30px] rounded-3xl cursor-pointer md:hidden text-header-font" 
             strokeWidth={0.7}
             onClick={()=>{toggleSideBar()}}
             />
           )}
         </div>
       </div>
-      <div className="flex gap-10 justify-between items-center px-5 py-4 font-medium bg-white min-h-[60px] max-md:w-full">
-        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/6ef06f6398f3d2ab3302f629178c7917df596ff0dee3f6615a800534649e8aba?placeholderIfAbsent=true&apiKey=ab952a7505584a89aa779c6b786731e3" alt="" className="w-6" />
-        <h1 className="self-stretch my-auto text-xl text-center text-zinc-700 w-[437px] ">
+      <div className="flex gap-10 justify-between items-center px-5 py-4 font-medium text-header-font min-h-[60px] max-md:w-full">
+        <div></div>
+        <h1 className="self-stretch my-auto text-xl text-center w-[437px] ">
           {selectedPage==''?'Overview':Overview[selectedPage]}
         </h1>
-        <time className="self-stretch my-auto text-sm text-gray-500">
+        <time className="self-stretch my-auto text-sm ">
           {date.format("dddd, MMMM DD, YYYY")}
         </time>
       </div>

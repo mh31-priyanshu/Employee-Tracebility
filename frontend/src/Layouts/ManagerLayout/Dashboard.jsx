@@ -27,7 +27,7 @@ function Dashboard() {
       fetchUser(); // Call the async function
     }, []);
   return (
-    <div className="flex overflow-hidden  bg-gray-100">
+    <div className="flex overflow-hidden  bg-bg">
       <Sidebar />
       <main className="w-[100%]">
         <Header/>

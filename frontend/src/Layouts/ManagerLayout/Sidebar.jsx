@@ -48,11 +48,11 @@ function Sidebar() {
       
 
     return (
-        <nav className={`${openSideBar?'max-md:block z-50 fixed shadow-lg w-[320px]':'max-md:hidden'} p-4 bg-white md:w-[320px]`}>
+        <nav className={`${openSideBar?'max-md:block z-50 fixed shadow-lg w-[320px]':'max-md:hidden'} p-4 bg-header md:w-[320px]`}>
             <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/a6798a9241c17dbb1d4d5c7490ae3dfaa3561f3d4bed1a9847acf18d80520877?placeholderIfAbsent=true&apiKey=ab952a7505584a89aa779c6b786731e3" alt="Logo" className="object-contain aspect-[5.15] w-[160px] mb-[60px]" />
             <ul className="space-y-1">
             <li>
-                <a href="#" className="flex items-center text-gray-700 hover:bg-gray-200 rounded p-2">
+                <a href="#" className="flex items-center text-header-font hover:bg-hover rounded p-2 hover:text-hover-font">
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                 </svg>
@@ -60,7 +60,7 @@ function Sidebar() {
                 </a>
             </li>
             <li>
-                <a href="#" className="flex items-center text-gray-700 hover:bg-gray-200 rounded p-2">
+                <a href="#" className="flex items-center text-header-font hover:bg-hover rounded p-2 hover:text-hover-font">
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -68,7 +68,7 @@ function Sidebar() {
                 </a>
             </li>
             <li>
-                <a href="#" className="flex items-center text-gray-700 hover:bg-gray-200 rounded p-2">
+                <a href="#" className="flex items-center text-header-font hover:bg-hover rounded p-2 hover:text-hover-font">
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
@@ -76,7 +76,7 @@ function Sidebar() {
                 </a>
             </li>
             <li onClick={handleLogout}>
-                <a href="#" className="flex items-center text-gray-700 hover:bg-gray-200 rounded p-2">
+                <a href="#" className="flex items-center text-header-font hover:bg-hover rounded p-2 hover:text-hover-font">
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
@@ -86,7 +86,7 @@ function Sidebar() {
             <li>
                 <button 
                 onClick={() => {setIsSettingsOpen(!isSettingsOpen)}} 
-                className={`flex items-center justify-between w-full text-gray-700  rounded p-2 ${!isSettingsOpen?' bg-gray-200':'text-gray-700'} `}
+                className={`flex items-center justify-between w-full text-header-font  rounded p-2 ${!isSettingsOpen?'':' bg-hover text-hover-font'} hover:text-hover-font `}
                 >
                 <span className={`flex items-center `}>
                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -100,63 +100,63 @@ function Sidebar() {
                 {isSettingsOpen && (
                 <ul className="ml-4 mt-2 space-y-2">
 
-                    <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded ${selectedPage=='user-master'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
+                    <button className={`flex items-center p-2 w-full hover:bg-hover rounded ${selectedPage=='user-master'?'text-hover-font bg-hover':'text-header-font'} hover:text-hover-font`}
                         onClick={() => {dispatch(setSelectedPage('user-master')); dispatch(setOpenSideBar(false));}}
                     >
                         <User className="w-4 h-4 mr-2" />
                         User Master
                     </button>
                     
-                    <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='shift-master'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
+                    <button className={`flex items-center p-2 w-full hover:bg-hover rounded  ${selectedPage=='shift-master'?'text-hover-font bg-hover':'text-header-font'} hover:text-hover-font`}
                         onClick={() => {dispatch(setSelectedPage('shift-master')); dispatch(setOpenSideBar(false));}}
                     >
                         <UsersRoundIcon className="w-4 h-4 mr-2" />
                         Shift Master
                     </button>
                     
-                    <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='line-master'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
+                    <button className={`flex items-center p-2 w-full hover:bg-hover rounded  ${selectedPage=='line-master'?'text-hover-font bg-hover':'text-header-font'} hover:text-hover-font`}
                         onClick={() => {dispatch(setSelectedPage('line-master')); dispatch(setOpenSideBar(false));}}
                     >
                         <ChartNoAxesColumn className="w-4 h-4 mr-2" />
                         Line Master
                     </button>
                     
-                    <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='line-assignment'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
+                    <button className={`flex items-center p-2 w-full hover:bg-hover rounded  ${selectedPage=='line-assignment'?'text-hover-font bg-hover':'text-header-font'} hover:text-hover-font`}
                         onClick={() => {dispatch(setSelectedPage('line-assignment')); dispatch(setOpenSideBar(false));}}
                     >
                         <PenLine className="w-4 h-4 mr-2" />
                         Line Assignment
                     </button>
                     
-                    <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='station-master'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
+                    <button className={`flex items-center p-2 w-full hover:bg-hover rounded  ${selectedPage=='station-master'?'text-hover-font bg-hover':'text-header-font'} hover:text-hover-font`}
                         onClick={() => {dispatch(setSelectedPage('station-master')); dispatch(setOpenSideBar(false));}}
                     >
                         <RadioTower className="w-4 h-4 mr-2" />
                         Station Master
                     </button>
                     
-                    <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='controller-family'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
+                    <button className={`flex items-center p-2 w-full hover:bg-hover rounded  ${selectedPage=='controller-family'?'text-hover-font bg-hover':'text-header-font'} hover:text-hover-font`}
                         onClick={() => {dispatch(setSelectedPage('controller-family')); dispatch(setOpenSideBar(false));}}
                     >
                         <RadioTower className="w-4 h-4 mr-2" />
                         Controller Family
                     </button>
                     
-                    <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='barcode-verify'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
+                    <button className={`flex items-center p-2 w-full hover:bg-hover rounded  ${selectedPage=='barcode-verify'?'text-hover-font bg-hover':'text-header-font'} hover:text-hover-font`}
                         onClick={() => {dispatch(setSelectedPage('barcode-verify')); dispatch(setOpenSideBar(false));}}
                     >
                         <Barcode className="w-4 h-4 mr-2" />
                         Barcode Verify
                     </button>
                     
-                    <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='data-backup'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
+                    <button className={`flex items-center p-2 w-full hover:bg-hover rounded  ${selectedPage=='data-backup'?'text-hover-font bg-hover':'text-header-font'} hover:text-hover-font`}
                         onClick={() => {dispatch(setSelectedPage('data-backup')); dispatch(setOpenSideBar(false));}}
                     >
                         <DatabaseBackup className="w-4 h-4 mr-2" />
                         Data Backup
                     </button>
                     
-                    <button className={`flex items-center p-2 w-full hover:bg-[#E8F1FD] rounded  ${selectedPage=='data-restore'?'text-blue-600 bg-[#E8F1FD]':'text-gray-700'}`}
+                    <button className={`flex items-center p-2 w-full hover:bg-hover rounded  ${selectedPage=='data-restore'?'text-hover-font bg-hover':'text-header-font'} hover:text-hover-font`}
                         onClick={() => {dispatch(setSelectedPage('data-restore')); dispatch(setOpenSideBar(false));}}
                     >
                         <ArchiveRestore className="w-4 h-4 mr-2" />
