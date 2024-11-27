@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import React, { useState, useEffect } from 'react';
 import TableSearch from '../Additional/TableSearch';
 import toast from 'react-hot-toast';

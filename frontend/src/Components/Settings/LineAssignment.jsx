@@ -4,6 +4,7 @@ import TableSearch from '../Additional/TableSearch';
 import AutocompleteInput from '../Additional/AutocompleteInput';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 import { name } from 'react-date-object/calendars/julian';
 
 export default function LineAssignment() {
@@ -11,89 +12,108 @@ export default function LineAssignment() {
   const [shiftData, setShiftData] = useState([]);
   const [employeeData, setEmployeeData] = useState([]);
   const [stationData, setStationData] = useState([]);
+  const [tableData, setTableData] = useState([]);
+  const [editKey, setEditKey] = useState(null);
 
 
   const [inputValues, setInputValues] = useState({
     employee: { user_id: '', employee_id: '', name: '' },
     station: { station_id: '', station_name: '' },
     line: { line_id: '', line_name: '' },
-    shift: '',
+    shift: { shift_id: '', shift_name: '' },
+    date: ''
   });
 
   const columns = [
-    "Date", "Shift", "Line Name", "Employee Name", "Employee Barcode", "Edit", "Delete"
+    "Job Number", "Employee ID", "Employee Name", "Station Name", "Line Name", "Shift", "Job Date", "Status", "Edit", "Delete"
   ]
 
+  const fetchData = async () => {
+    try {
+      const responses = await axios.all([
+        axios.get(`${import.meta.env.VITE_REACT_APP_SERVER_URL}/shift/getall`),
+        axios.get(`${import.meta.env.VITE_REACT_APP_SERVER_URL}/user/getall`),
+        axios.get(`${import.meta.env.VITE_REACT_APP_SERVER_URL}/station/getall`),
+        axios.get(`${import.meta.env.VITE_REACT_APP_SERVER_URL}/job/getall`)
+      ]);
+
+      const [shifts, employees, stations, jobs] = responses.map(res => res.data.data);
+      setShiftData(
+        shifts.filter(shift => shift.active === 1).map(shift => ({
+          id: shift.shift_id.toString(),
+          name: shift.shift_name,
+          startTime: shift.start_time,
+          endTime: shift.end_time,
+        }))
+      );
+      setEmployeeData(employees.map(user => ({
+        id: user.employee_id,
+        name: user.employee_name,
+        user_id: user.user_id.toString(),
+      })));
+      setStationData(stations.map(station => ({
+        id: station.station_id.toString(),
+        name: station.station_name,
+      })));
+      setTableData(jobs);
+    } catch (err) {
+      console.error('Error fetching data:', err);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const responses = await axios.all([
-          axios.get(`${import.meta.env.VITE_REACT_APP_SERVER_URL}/shift/getall`),
-          axios.get(`${import.meta.env.VITE_REACT_APP_SERVER_URL}/user/getall`),
-          axios.get(`${import.meta.env.VITE_REACT_APP_SERVER_URL}/station/getall`)
-        ]);
-
-        const [shifts, employees, stations] = responses.map(res => res.data.data);
-        setShiftData(
-          shifts.filter(shift => shift.active === 1).map(shift => ({
-            name: shift.shift_name,
-            startTime: shift.start_time,
-            endTime: shift.end_time,
-          }))
-        );
-        setEmployeeData(employees.map(user => ({
-          id: user.employee_id,
-          name: user.employee_name,
-          user_id: user.user_id.toString(),
-        })));
-        setStationData(stations.map(station => ({
-          id: station.station_id.toString(),
-          name: station.station_name,
-        })));
-      } catch (err) {
-        console.error('Error fetching data:', err);
-      }
-    };
 
     fetchData();
   }, []);
 
 
-  useEffect(() => {
-    const getCurrentShift = (shiftData) => {
-      if (!Array.isArray(shiftData)) {
-        console.error('Invalid input: shiftData is not an array', shiftData);
-        return '';
-      }
-    
-      const now = new Date();
-      const currentTime = now.getHours() * 60 + now.getMinutes();
-    
-      for (const shift of shiftData) {
-        const [startHour, startMinute] = shift.startTime.split(':').map(Number);
-        const [endHour, endMinute] = shift.endTime.split(':').map(Number);
-    
-        const startTimeMinutes = startHour * 60 + startMinute;
-        let endTimeMinutes = endHour * 60 + endMinute;
-    
-        if (endTimeMinutes < startTimeMinutes) {
-          endTimeMinutes += 24 * 60;
-        }
-    
-        const adjustedCurrentTime = currentTime < startTimeMinutes ? currentTime + 24 * 60 : currentTime;
-    
-        if (adjustedCurrentTime >= startTimeMinutes && adjustedCurrentTime < endTimeMinutes) {
-          return shift.name;
-        }
-      }
-    
-      return shiftData.length > 0 ? shiftData[0].name : '';
+  const getCurrentShift = () => {
+    const currentTime = new Date();
+    const currentTotalMinutes = currentTime.getHours() * 60 + currentTime.getMinutes();
+
+    // Convert "HH:mm:ss" to total minutes from midnight
+    const convertToMinutes = (time) => {
+      const [hour, minute] = time.split(":").map(Number);
+      return hour * 60 + minute;
     };
 
+    const currentShift = shiftData.find((shift) => {
+      const startTotalMinutes = convertToMinutes(shift.startTime);
+      const endTotalMinutes = convertToMinutes(shift.endTime);
+
+      if (startTotalMinutes <= endTotalMinutes) {
+        // Regular shift (does not span midnight)
+        return (
+          currentTotalMinutes >= startTotalMinutes &&
+          currentTotalMinutes <= endTotalMinutes
+        );
+      } else {
+        // Shift that spans midnight
+        return (
+          currentTotalMinutes >= startTotalMinutes ||
+          currentTotalMinutes <= endTotalMinutes
+        );
+      }
+    });
+
+    return currentShift ? {
+      shift_id: currentShift.id,
+      shift_name: currentShift.name
+    } : null;
+  };
+
+
+  useEffect(() => {
     if (shiftData.length > 0) {
-      const Shift = getCurrentShift(shiftData);
-      setInputValues(prevValues => ({ ...prevValues, shift: Shift }));
+      const Shift = getCurrentShift();
+      if (Shift) {
+        setInputValues(prevValues => ({
+          ...prevValues, shift: {
+            shift_id: Shift.shift_id,
+            shift_name: Shift.shift_name
+          }
+        }));
+      }
     }
   }, [shiftData]);
 
@@ -116,11 +136,106 @@ export default function LineAssignment() {
     }
   }, [inputValues.station.station_id]);
 
+  const handleResetClick = () => {
+    setInputValues({
+      employee: { user_id: '', employee_id: '', name: '' },
+      station: { station_id: '', station_name: '' },
+      line: { line_id: '', line_name: '' },
+      shift: { shift_id: '', shift_name: '' },
+      date: ''
+    });
+  }
 
 
-  const handleEditClick = () => { }
-  const handleDeleteClick = () => { }
+  const handleSaveClick = async () => {
 
+    if (!inputValues.employee.user_id || !inputValues.station.station_id || !inputValues.line.line_id || !inputValues.shift.shift_id) {
+      toast.error('Fill all Fields to Save');
+      return;
+    }
+
+    const payload = {
+      station_id: inputValues.station.station_id,
+      line_id: inputValues.line.line_id,
+      user_id: inputValues.employee.user_id,
+      shift_id: inputValues.shift.shift_id,
+      job_date: inputValues.date || ''  
+    };
+
+    console.log(inputValues.date);
+  
+    try {
+      let api_endpoint;
+      let response;
+      if (editKey) {
+        api_endpoint = `${import.meta.env.VITE_REACT_APP_SERVER_URL}/job/updatejob/${editKey}`;
+        response = await axios.put(api_endpoint, payload);
+      } else {
+        api_endpoint = `${import.meta.env.VITE_REACT_APP_SERVER_URL}/job/addjob`;
+        response = await axios.post(api_endpoint, payload);
+      }
+  
+      if (response.data.success) {
+        toast.success(response.data.message);
+        handleResetClick(); 
+        fetchData(); 
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Unable to save the data");
+    }
+  };
+  
+
+
+  const handleEditClick = async (row) => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_REACT_APP_SERVER_URL}/job/get/${row.job_id}`);
+      if (response.data.success) {
+        const { data } = response.data; 
+        setInputValues({
+          employee: {
+            user_id: data.user_id,
+            employee_id: data.employee_id,
+            name: data.employee_name,
+          },
+          station: {
+            station_id: data.station_id,
+            station_name: data.station_name,
+          },
+          line: {
+            line_id: data.line_id,
+            line_name: data.line_name,
+          },
+          shift: {
+            shift_id: data.shift_id,
+            shift_name: data.shift_name,
+          },
+          date: data.job_date,
+        });
+      }
+      setEditKey(row.job_id)
+    } catch (error) {
+      console.error(error);
+      toast.error("Unable to save the data");
+    }
+  };
+
+  const handleDeleteClick = async (row) => {
+    try {
+      const response = await axios.delete(`${import.meta.env.VITE_REACT_APP_SERVER_URL}/job/delete/${row.job_id}`);
+      if (response.data.success) {
+        toast.success("Job deleted successfully");
+        fetchData()
+      } else {
+        toast.error("Failed to delete the job");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Unable to delete the job");
+    }
+  };
+  
 
   return (
     <main className="flex-1 overflow-y-auto p-6">
@@ -130,8 +245,8 @@ export default function LineAssignment() {
         <div className='md:flex justify-between items-center bg-card-header px-6 py-6 mb-6 rounded-t-lg'>
           <h3 className="text-lg font-semibold">Line Assignment:</h3>
           <div className="flex  space-x-2  max-md:mt-3">
-            <button className="px-8 py-2 border rounded-lg text-gray-600 hover:bg-gray-100">Reset</button>
-            <button className="px-8 py-2 bg-button text-white rounded-lg hover:bg-header">Save</button>
+            <button onClick={handleResetClick} className="px-8 py-2 border rounded-lg text-gray-600 hover:bg-gray-100">Reset</button>
+            <button onClick={handleSaveClick} className="px-8 py-2 bg-button text-white rounded-lg hover:bg-header">Save</button>
           </div>
         </div>
         <form className="grid grid-cols-1 md:grid-cols-3 gap-4 px-6 pb-12">
@@ -139,7 +254,7 @@ export default function LineAssignment() {
             < AutocompleteInput
               suggestions={employeeData}
               label="Employee ID"
-              // value={{ id: inputValues.employee.employee_id, name: inputValues.employee.name }}
+              value={{ id: inputValues.employee.employee_id, name: inputValues.employee.name }}
               onChange={(value) => setInputValues({
                 ...inputValues, employee: {
                   user_id: value.user_id,
@@ -153,7 +268,7 @@ export default function LineAssignment() {
             < AutocompleteInput
               suggestions={stationData}
               label="Station Name"
-              // value={{ name: inputValues.station.station_name }}
+              value={{ name: inputValues.station.station_name }}
               onChange={(value) => setInputValues({
                 ...inputValues, station: {
                   station_id: value.id,
@@ -167,19 +282,36 @@ export default function LineAssignment() {
             <input type="text" id="shift-name" value={inputValues.line.line_name} className="w-full p-2 border rounded" readOnly />
           </div>
           <div>
-            <label htmlFor="shift-name" className="block text-sm font-medium text-gray-700 mb-1">Date</label>
-            <input type="datetime-local" id="shift-name" className="w-full p-2 border rounded" />
+            <label htmlFor="shift-name" className="block text-sm font-medium text-gray-700 mb-1" >Date</label>
+            <input onChange={(e) => { setInputValues({ ...inputValues, date: e.target.value }) }} value={inputValues.date} type="datetime-local" id="shift-name" className="w-full p-2 border rounded" />
           </div>
           <div>
             <label htmlFor="start-time" className="block text-sm font-medium text-gray-700 mb-1">Shift</label>
             <select
               className="w-full p-2 border rounded"
               name="shift"
-              value={inputValues.shift}
-              onChange={(e) => setInputValues({ ...inputValues, shift: e.target.value })}
+              value={inputValues.shift.shift_id || ""}
+              onChange={(e) => {
+                const selectedShift = shiftData.find(
+                  (shift) => shift.id === e.target.value
+                );
+
+                if (selectedShift) {
+                  setInputValues((prevValues) => ({
+                    ...prevValues,
+                    shift: {
+                      shift_id: selectedShift.id,
+                      shift_name: selectedShift.name,
+                    },
+                  }));
+                }
+              }}
             >
-              {shiftData.map((shift, index) => (
-                <option key={index} value={shift.name} className="px-4 py-2 text-left">
+              <option value="" disabled>
+                Select Shift
+              </option>
+              {shiftData.map((shift) => (
+                <option key={shift.id} value={shift.id}>
                   {shift.name}
                 </option>
               ))}
@@ -188,7 +320,7 @@ export default function LineAssignment() {
         </form>
 
       </div>
-      {/* <TableSearch name="Line Assignment Table" header={columns} data={lines} onDeleteClick={handleDeleteClick} onEditClick={handleEditClick}/> */}
+      <TableSearch name="Line Assignment Table" header={columns} data={tableData} onDeleteClick={handleDeleteClick} onEditClick={handleEditClick} />
     </main>
   );
 }
@@ -196,130 +328,4 @@ export default function LineAssignment() {
 
 
 
-// import React, { useEffect, useState } from 'react';
-// import axios from 'axios';
 
-// export default function LineAssignment() {
-//   const [lines, setLines] = useState([]);       // For line data
-//   const [employees, setEmployees] = useState([]); // For employee data
-//   const [shifts, setShifts] = useState([]);      // For shift data
-//   const [selectedLine, setSelectedLine] = useState('');
-//   const [selectedEmployee, setSelectedEmployee] = useState('');
-//   const [selectedShift, setSelectedShift] = useState('');
-
-//   // Fetch line data from API
-//   useEffect(() => {
-//     const fetchLines = async () => {
-//       try {
-//         const response = await axios.get('/line/getall');
-//         setLines(Array.isArray(response.data) ? response.data : []); // Ensure data is an array
-//       } catch (error) {
-//         console.error('Error fetching lines:', error);
-//       }
-//     };
-//     fetchLines();
-//   }, []);
-
-//   // Fetch employee data from API
-//   useEffect(() => {
-//     const fetchEmployees = async () => {
-//       try {
-//         const response = await axios.get('/user/getallusers');
-//         setEmployees(Array.isArray(response.data) ? response.data : []); // Ensure data is an array
-//       } catch (error) {
-//         console.error('Error fetching employees:', error);
-//       }
-//     };
-//     fetchEmployees();
-//   }, []);
-
-//   // Fetch shift data from API
-//   useEffect(() => {
-//     const fetchShifts = async () => {
-//       try {
-//         const response = await axios.get('/shift/getall');
-//         setShifts(Array.isArray(response.data) ? response.data : []); // Ensure data is an array
-//       } catch (error) {
-//         console.error('Error fetching shifts:', error);
-//       }
-//     };
-//     fetchShifts();
-//   }, []);
-
-//   // Handler to create a job using the selected data
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     try {
-//       const response = await axios.post('/job/addjob', {
-//         line: selectedLine,
-//         employee: selectedEmployee,
-//         shift: selectedShift,
-//       });
-//       console.log('Job created successfully:', response.data);
-//     } catch (error) {
-//       console.error('Error creating job:', error);
-//     }
-//   };
-
-//   return (
-//     <main className="flex-1 overflow-y-auto p-6">
-//       <div className="bg-white shadow rounded-lg mb-6">
-//         <div className='md:flex justify-between items-center bg-[#F7F9FC] px-6 py-6 mb-6 rounded-t-lg'>
-//           <h3 className="text-lg font-semibold">Line Assignment:</h3>
-//           <div className="flex  space-x-2  max-md:mt-3">
-//             <button className="px-8 py-2 border rounded-lg text-gray-600 hover:bg-gray-100">Reset</button>
-//             <button onClick={handleSubmit} className="px-8 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Save</button>
-//           </div>
-//         </div>
-
-//         <form className="grid grid-cols-1 md:grid-cols-3 gap-4 px-6 pb-12">
-//           <div>
-//             <label htmlFor="line-name" className="block text-sm font-medium text-gray-700 mb-1">Line Name</label>
-//             <input
-//               list="lines"
-//               id="line-name"
-//               className="w-full p-2 border rounded"
-//               onChange={(e) => setSelectedLine(e.target.value)}
-//             />
-//             <datalist id="lines">
-//               {Array.isArray(lines) && lines.map((line) => (
-//                 <option key={line.id} value={line.line_name} />
-//               ))}
-//             </datalist>
-//           </div>
-
-//           <div>
-//             <label htmlFor="employee-name" className="block text-sm font-medium text-gray-700 mb-1">Employee Name</label>
-//             <input
-//               list="employees"
-//               id="employee-name"
-//               className="w-full p-2 border rounded"
-//               onChange={(e) => setSelectedEmployee(e.target.value)}
-//             />
-//             <datalist id="employees">
-//               {Array.isArray(employees) && employees.map((employee) => (
-//                 <option key={employee.id} value={employee.name} />
-//               ))}
-//             </datalist>
-//           </div>
-
-//           <div>
-//             <label htmlFor="shift-name" className="block text-sm font-medium text-gray-700 mb-1">Shift</label>
-//             <select
-//               className="w-full p-2 border rounded"
-//               name="shift"
-//               value={selectedShift}
-//               onChange={(e) => setSelectedShift(e.target.value)}
-//             >
-//               {Array.isArray(shifts) && shifts.map((shift) => (
-//                 <option key={shift.id} value={shift.name}>
-//                   {shift.name}
-//                 </option>
-//               ))}
-//             </select>
-//           </div>
-//         </form>
-//       </div>
-//     </main>
-//   );
-// }
