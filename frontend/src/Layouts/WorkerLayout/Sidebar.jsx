@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import { clearUser } from '../../redux/AuthSlice';
 import { useNavigate } from 'react-router-dom';
 
+
 const sidebarItems = [
   { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/feac93fdbfa80cd5da4ec08ccf5d6af0ccbd1da5da3358fb50fa3b1a83edbc42?placeholderIfAbsent=true&apiKey=ab952a7505584a89aa779c6b786731e3", text: "Dashboard", isActive: true },
   { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/0d177a2f15dd05adc5c834de067a3c32c8420ae51baa8a54933d6a4ad6b88ba1?placeholderIfAbsent=true&apiKey=ab952a7505584a89aa779c6b786731e3", text: "Help" },
